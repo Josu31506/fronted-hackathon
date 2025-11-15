@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
-  assignIncident,
   createIncident,
   getIncidents,
   updateIncidentStatus,
@@ -62,22 +61,6 @@ export const useIncidents = ({ autoFetch = true }: UseIncidentsOptions = {}) => 
     [fetchIncidents]
   );
 
-  const handleAssignTeam = useCallback(
-    async (id: string, team: string) => {
-      try {
-        setLoading(true);
-        await assignIncident(id, team);
-        await fetchIncidents();
-      } catch (err) {
-        console.error(err);
-        setError('No pudimos asignar el incidente');
-      } finally {
-        setLoading(false);
-      }
-    },
-    [fetchIncidents]
-  );
-
   useEffect(() => {
     if (autoFetch) {
       fetchIncidents();
@@ -91,6 +74,5 @@ export const useIncidents = ({ autoFetch = true }: UseIncidentsOptions = {}) => 
     refetch: fetchIncidents,
     create: handleCreateIncident,
     updateStatus: handleUpdateStatus,
-    assignTeam: handleAssignTeam,
   };
 };

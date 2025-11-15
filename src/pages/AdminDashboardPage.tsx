@@ -4,15 +4,9 @@ import { useIncidents } from '../hooks/useIncidents';
 import { IncidentStatus } from '../types/incident';
 
 const statusOptions: (IncidentStatus | 'todos')[] = ['todos', 'pendiente', 'en_atencion', 'resuelto'];
-const teamOptions = [
-  'Sin equipo',
-  'Limpieza – Edificio A',
-  'Limpieza – Edificio B',
-  'Seguridad',
-]; // TODO: reemplazar por equipos desde el backend
 
 export const AdminDashboardPage = () => {
-  const { incidents, loading, updateStatus, assignTeam } = useIncidents();
+  const { incidents, loading, updateStatus } = useIncidents();
   const [statusFilter, setStatusFilter] = useState<(typeof statusOptions)[number]>('todos');
 
   const filteredIncidents = useMemo(() => {
@@ -50,7 +44,6 @@ export const AdminDashboardPage = () => {
               <th className="px-4 py-3 text-left font-semibold">Ubicación</th>
               <th className="px-4 py-3 text-left font-semibold">Urgencia</th>
               <th className="px-4 py-3 text-left font-semibold">Estado</th>
-              <th className="px-4 py-3 text-left font-semibold">Equipo</th>
               <th className="px-4 py-3 text-left font-semibold">Acciones</th>
             </tr>
           </thead>
@@ -62,19 +55,6 @@ export const AdminDashboardPage = () => {
                 <td className="px-4 py-3 capitalize text-secondary/80">{incident.urgency}</td>
                 <td className="px-4 py-3">
                   <StatusBadge status={incident.status} />
-                </td>
-                <td className="px-4 py-3">
-                  <select
-                    className="w-full rounded-lg border px-2 py-1 text-sm focus:border-primary focus:outline-none"
-                    value={incident.assignedTeam ?? ''}
-                    onChange={(event) => assignTeam(incident.id, event.target.value)}
-                  >
-                    {teamOptions.map((team) => (
-                      <option key={team} value={team === 'Sin equipo' ? '' : team}>
-                        {team}
-                      </option>
-                    ))}
-                  </select>
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex flex-wrap gap-2">

@@ -16,9 +16,7 @@ export const LoginPage = () => {
     event.preventDefault();
     if (!name.trim()) return;
     await login(name, role);
-    const destination =
-      role === 'staff' ? '/admin' : role === 'autoridad' ? '/assigned' : '/incidents';
-    navigate(destination, { replace: true });
+    navigate('/incidents');
   };
 
   return (

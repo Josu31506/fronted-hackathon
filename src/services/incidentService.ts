@@ -11,7 +11,6 @@ let mockIncidents: Incident[] = [
     createdAt: new Date().toISOString(),
     createdBy: 'María Rojas',
     role: 'estudiante',
-    assignedTeam: undefined,
   },
   {
     id: '2',
@@ -23,8 +22,6 @@ let mockIncidents: Incident[] = [
     createdAt: new Date().toISOString(),
     createdBy: 'Carlos Vega',
     role: 'staff',
-    assignedTeam: 'Seguridad',
-    assignedTo: 'María López',
   },
 ];
 
@@ -60,20 +57,6 @@ export const updateIncidentStatus = async (id: string, status: IncidentStatus) =
   // TODO: Replace with axios.patch(`/incidents/${id}`, { status })
   mockIncidents = mockIncidents.map((incident) =>
     incident.id === id ? { ...incident, status, updatedAt: new Date().toISOString() } : incident
-  );
-  return simulateRequest(mockIncidents.find((incident) => incident.id === id) ?? null);
-};
-
-export const assignIncident = async (id: string, team: string) => {
-  // TODO: Replace with axios.patch(`/incidents/${id}/assign`, { team })
-  mockIncidents = mockIncidents.map((incident) =>
-    incident.id === id
-      ? {
-          ...incident,
-          assignedTeam: team || undefined,
-          updatedAt: new Date().toISOString(),
-        }
-      : incident
   );
   return simulateRequest(mockIncidents.find((incident) => incident.id === id) ?? null);
 };

@@ -13,8 +13,6 @@ export interface Incident {
   updatedAt?: string;
   createdBy: string;
   role: 'estudiante' | 'staff' | 'autoridad';
-  assignedTeam?: string;
-  assignedTo?: string;
 }
 
 export interface NewIncidentPayload {

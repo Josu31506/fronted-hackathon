@@ -1,76 +1,39 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  ReactNode,
-} from 'react';
-import { User, UserRole } from '../types/user';
+import { ReactNode, createContext, useContext, useMemo, useState } from 'react';
+import { AuthUser } from '../types';
 
 interface AuthContextValue {
-  user: User | null;
-  loading: boolean;
-  login: (name: string, role: UserRole) => Promise<void>;
+  user: AuthUser | null;
+  login: (email: string, password: string) => void;
+  register: (name: string, email: string, password: string) => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-const STORAGE_KEY = 'alertautec_user';
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<AuthUser | null>(null);
 
-  useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      try {
-        setUser(JSON.parse(stored));
-      } catch (error) {
-        console.error('Error parsing stored user', error);
-        localStorage.removeItem(STORAGE_KEY);
-      }
-    }
-    setLoading(false);
-  }, []);
+  const login = (email: string, password: string) => {
+    console.log('Iniciar sesión', { email, password });
+    setUser({ name: 'Estudiante', email });
+  };
 
-  const login = useCallback(async (name: string, role: UserRole) => {
-    // TODO: Replace mock logic with real authentication request
-    const mockUser: User = {
-      id: crypto.randomUUID(),
-      name,
-      role,
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(mockUser));
-    setUser(mockUser);
-  }, []);
+  const register = (name: string, email: string, password: string) => {
+    console.log('Registrarse', { name, email, password });
+    setUser({ name, email });
+  };
 
-  const logout = useCallback(() => {
-    // TODO: integrate with backend logout endpoint when available
-    localStorage.removeItem(STORAGE_KEY);
-    setUser(null);
-  }, []);
+  const logout = () => setUser(null);
 
-  const value = useMemo(
-    () => ({
-      user,
-      loading,
-      login,
-      logout,
-    }),
-    [user, loading, login, logout]
-  );
+  const value = useMemo(() => ({ user, login, register, logout }), [user]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export const useAuthContext = () => {
+export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuthContext must be used within an AuthProvider');
+    throw new Error('useAuth debe usarse dentro de un AuthProvider');
   }
   return context;
 };

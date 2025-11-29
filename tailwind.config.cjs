@@ -4,14 +4,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#00A7B5',
-        'primary-dark': '#00828C',
-        secondary: '#1F2933',
-        background: '#F5F5F5',
-        accent: '#00C4CC',
-        pending: '#FCEFC7',
-        inprogress: '#D5F5F6',
-        resolved: '#DEF7EC',
+        primary: '#007BFF',
+        secondary: '#00C8E3',
+        page: '#F7FAFC',
+        text: '#1E293B',
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
     },
   },
